@@ -8,17 +8,12 @@ Pinouts:
     https://smarthome-blogger.de/guide/nodemcu-esp8266-pinout/
 """
 
-# imports -----------------------------------------------------
-from network import WLAN
-from machine import Pin, I2C, ADC, Timer, RTC
-from dht import DHT11
-from esp8266_i2c_lcd import I2cLcd
-import login
-import gc 
+import gc
+from machine            import Pin, I2C, ADC, Timer, RTC
+from dht                import DHT11
+from esp8266_i2c_lcd    import I2cLcd
 
 
-# var and const definitions -----------------------------------
-# available GPIO and ADC pins
 pins = {
     "D0": Pin(16),                      # unused
     "D1": Pin(5),                       # SCL (I2C Clock)
@@ -32,22 +27,19 @@ pins = {
     "A0": ADC(0)                        # unused
 }
 
-# LCD Output
 lcd = {
-    "id": 39,
-    "i2c": I2cLcd(I2C(scl=pins["D1"], sda=pins["D2"]), 39, 2, 16),
+    "id":       39,
+    "i2c":      I2cLcd(I2C(scl=pins["D1"], sda=pins["D2"]), 39, 2, 16),
+    "enabled":  True,
+    "locked":   False,
     "content": [
         # 0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15
         [" ", " ", " ", " ", "T", "m", "p", ":", " ", " ", " ", "C", " ", " ", " ", " "], # 0
         [" ", " ", " ", " ", "H", "u", "m", ":", " ", " ", " ", "%", " ", " ", " ", " "]  # 1
-        # H    H    :    M    M         D    D    .    M    M    .    Y    Y    Y    Y
-        #      H    :    X    X    X    %              T    :    X    X    X    C
-    ],
-    "enabled": True,
-    "locked": False
+    ]
+
 }
 
-# current DHT values
 dht = {
     "obj": DHT11(pins["D5"]),
     "update": get_DHT_data,
@@ -57,14 +49,9 @@ dht = {
     }
 }
 
-# button
 button = pins["D7"]
 
-# real time clock
-rtc = RTC()
 
-
-# class and function definions --------------------------------
 def interrupt_print(pin):
     """Prints identitiy and value of a pin to console,
         supposed to be used as an IRQ callback for debugging"""
@@ -115,7 +102,6 @@ def toggle_display(pin):
     else:
         lcd["locked"] = False
 
-# main loop logic
 def main_loop(_timer):
     """
         Gets DHT data, saves it to string and prints it to LCD

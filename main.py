@@ -3,7 +3,6 @@ main.py
 
 Main script for home thermometer
 Gets data from DHT11 sensor and posts it to LCD display
-TODO hosts webserver
 """
 
 # main --------------------------------------------------------
