@@ -1,6 +1,6 @@
-# Micropython Thermometer
+# MicroPython Thermometer
 
-Micropython Hello World.
+MicroPython Hello World.
 
 Just a simple program reading data from a DHT11 sensor and posting it to an LCD via I2C. Build for an ESP8266 on a NodeMCU board.
 
